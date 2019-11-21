@@ -16,4 +16,16 @@ Es wird kein Bildschirm am RaspberryPi benötigt um dieses Setup durchzuführen.
 7. kitty.exe [herunterladen](https://github.com/cyd01/KiTTY/releases).
 8. Per SSH (kitty) mit dem RaspberryPi verbinden, hierzu die eben ausfindig gemachte IP in das Feld Host name eintragen und auf Open klicken.
 
+## System Update und Installation von Ansible
 
+Auf der Konsole führ man nun nacheinander die nachfolgenden Befehle aus.
+
+1. `sudo apt-get update` Um die Paketlisten zu aktualisieren
+2. `sudo apt-get upgrade` Um die Pakete zu aktualisieren
+3. `sudo apt-get install ansible` Um Ansible zu installieren
+
+Nun hat man das System auf den aktuellsten Stand gebracht und [Ansible](https://docs.ansible.com/ansible/latest/index.html), ein Tool zum automatischen provisionieren von Systemen, installiert.
+
+## AlarmPi Git Repositiory clonen
+
+TBD
