@@ -1,2 +1,3 @@
 # alarmpi
-A setup for receiving alarm mails and forward the data to FeuerSoftwares Connect API
+
+Ein Setup um Alarm E-Mails zu empfangen und an die FeuerSoftwares Connect API weiterzuleiten 
