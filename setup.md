@@ -14,4 +14,6 @@ Es wird kein Bildschirm am RaspberryPi benötigt um dieses Setup durchzuführen.
 5. Nun SD Karte ins RaspberryPi stecken und dieses anschliessend mit Strom versorgen.
 6. Das RPi bootet und bekommt vom Router (z.B. der FritzBox) eine IP Adresse per DHCP zugewiesen. Diese lässt sich über das Webinterface des Routers herausfinden.
 7. kitty.exe [herunterladen](https://github.com/cyd01/KiTTY/releases).
+8. Per SSH (kitty) mit dem RaspberryPi verbinden, hierzu die eben ausfindig gemachte IP in das Feld Host name eintragen und auf Open klicken.
+
 
