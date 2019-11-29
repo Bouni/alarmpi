@@ -1,0 +1,42 @@
+accounts:
+  - name: Musterstadt
+    mail:
+        host: imap.mailprovider.de
+        user: alarm@ffw-musterstadt.de
+        password: Feuer!
+        subject: "Einsatzmeldung"
+    connect:
+        token: >- 
+            E-pzIiYlxxTdFu8w9a-KWNVHv-4jIqRdg5UKyiwRE24soOJNDHyFi9MHXDzHICJUQ9O
+            AQryScOihl5F2ZVsFeOEvy1bhOU5Vr33ocLRteQhTL4uTHr76wV4BLkaOYvJGOpzVBx
+            YyQoQr88o9DgarO3V3tU2wGWghmWcSHYQzZcCu1SVDkvPJk3qs6Uz6uLGsERzSQIOnd
+            pPagCKpBt8p9flM_dax-10oWhqXjhTXzCnOO512R1-0i1S9N7OEjUFr1NIesrhCjrl9
+            K_nwPwWHoHHXaSpaddouk_9_EKDcXVqBXFLJwYRB9mQ-pxMhm--Gy-iKqzBeky-pPpG
+            i4_v9XDzDpS4xPlpL3N1NGuAmQsgVWbEjWa-rdRu9Af8k9Bb4XvogCQJ5--TRlnGzDo
+            04g3Xi2obBBpwBmZRXdddYpwRKHBTyl96ERDZadnD2c70QpFfOA2pduLBM1RHUpeqiw
+            GABXfs-FQ5eZ8fMPX7RYiutzourY3K_tFsCvaB0w6jXqTzQsfqjSceJyPh8erf6OiTS
+            LA_C65GHJY3v6c3sCToIIuoplDHB7Havy0XI0S4_NNvfIQ
+parser:
+  - var: start
+    regex: 'LS RTK: (.*)\n'
+  - var: number
+    regex: 'EINSATZNUMMER: (.*)\n'
+  - var: keyword
+    regex: 'STICHWORT: (.*)\n'
+  - var: city
+    regex: 'Ort: (.*)\n'
+  - var: district
+    regex: 'Ortsteil: (.*)\n'
+  - var: object
+    regex: 'Objekt: (.*)\n'
+  - var: street
+    regex: 'Strasse: (.*)\n'
+  - var: housenumber
+    regex: 'Hausnummer: (.*)\n'
+  - var: comment
+    regex: 'Bemerkung: (.*)\n'
+  - var: siren
+    regex: 'Sondersignal: (.*)\n'
+  - var: assigned
+    regex: 'Zugeteilt: (.*)\n'
+
