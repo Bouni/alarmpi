@@ -59,7 +59,7 @@ class Observer:
                 {"key": "Objekt", "value": data.get("object")},
                 {"key": "Sondersignal", "value": data.get("siren")},
             ],
-            "ric": data.get("assigned") 
+            "ric": data.get("assigned"),
         }
         return alarmdata
 
@@ -73,10 +73,10 @@ class Observer:
             alarmenabled=True,
             address=alarmdata.get("address"),
             facts=alarmdata.get("facts"),
-            #number=alarmdata.get("number"),
+            # number=alarmdata.get("number"),
             number="12121212",
             properties=alarmdata.get("properties"),
-            ric=alarmdata.get("ric")
+            ric=alarmdata.get("ric"),
         )
 
 
@@ -86,6 +86,10 @@ def main(configfile):
 
     with open(configfile) as cfg:
         config = yaml.load(cfg, Loader=yaml.BaseLoader)
+
+    if not config:
+        LOGGER.error("No config file found at %s!", configfile)
+        sys.exit(1)
 
     observer = Observer(config)
     observer.run()
