@@ -23,17 +23,17 @@
 
     - name: create app folder
       file:
-    		path: /opt/alarmpi
-				recurse: yes
-    		state: directory
-		    mode: '0755'
-				owner: pi
-				group: pi
+        path: /opt/alarmpi
+        recurse: yes
+        state: directory
+        mode: '0755'
+        owner: pi
+        group: pi
 
-		- name: clone git repo
-			git:
-				repo: https://github.com/Bouni/alarmpi
-				dest: /opt/alarmpi
+    - name: clone git repo
+      git:
+        repo: https://github.com/Bouni/alarmpi
+        dest: /opt/alarmpi
 
     - name: install python requirements into venv
       pip:
