@@ -5,6 +5,51 @@
   become: true
 
   tasks:
+
     - name: Update all packages to the latest version
       apt:
         upgrade: dist
+
+    - name: Install required packages
+      apt:
+        pkg:
+          - git
+          - build-essential
+          - libssl-dev 
+          - libffi-dev
+          - python3-dev
+          - python3-pip
+          - python3-venv
+
+    - name: create app folder
+      file:
+    		path: /opt/alarmpi
+				recurse: yes
+    		state: directory
+		    mode: '0755'
+				owner: pi
+				group: pi
+
+		- name: clone git repo
+			git:
+				repo: https://github.com/Bouni/alarmpi
+				dest: /opt/alarmpi
+
+    - name: install python requirements into venv
+      pip:
+        requirements: /opt/alarmpi/app/requirements.txt
+        virtualenv: /opt/alarmpi/venv
+        umask: "0022" 
+
+    - name: install systemd service file
+      copy:
+        src: /opt/alarmpi/alarmpi.service
+        dest: /etc/systemd/system/alarmpi.service
+        remote_src: yes
+
+    - name: enable systemd service but do not start it
+      systemd:
+        name: alarmpi.service
+        state: stopped
+        enabled: yes
+        daemon_reload: yes
