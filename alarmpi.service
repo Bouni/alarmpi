@@ -1,0 +1,14 @@
+[Unit]
+Description=AlarmPi service
+After=network-online.target
+
+[Service]
+Type=simple
+User=pi
+Group=pi
+ExecStart=/opt/alarmpi/venv/bin/python /opt/alarmpi/app/alarmpi
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
