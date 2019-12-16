@@ -19,9 +19,8 @@
           - libffi-dev
           - python3-dev
           - python3-pip
-          - python3-venv
           - python3-setuptools
-          - python3-virtualenv
+          - virtualenv
 
     - name: create app folder
       file:
@@ -36,11 +35,17 @@
       git:
         repo: https://github.com/Bouni/alarmpi
         dest: /opt/alarmpi
+        force: yes
+
+    - name: install virtualenv module
+      pip:
+        name: virtualenv
 
     - name: install python requirements into venv
       pip:
         requirements: /opt/alarmpi/app/requirements.txt
         virtualenv: /opt/alarmpi/venv
+        virtualenv_command: "/usr/bin/python3.7 -m venv"
         umask: "0022" 
 
     - name: install systemd service file
