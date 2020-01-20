@@ -8,8 +8,19 @@ LOGGER = logging.getLogger(__name__)
 class AlarmParser:
     def __init__(self, config, msg):
         self.config = config
-        self.msg = quopri.decodestring(msg.get_payload()).decode("utf-8")
+        self.msg = self.decode(msg.get_payload())
         self._parse()
+
+    def decode(self, msg):
+        LOGGER.error(type(msg))
+        for e in ["utf-8", "cp1252", "latin1"]:
+            try:
+                return quopri.decodestring(msg).decode(e)
+            except UnicodeDecodeError:
+                pass
+        LOGGER.error("Failed to decode message with utf-8, cp1252 and latin1")
+        return None
+
 
     def _parse(self):
         result = {}

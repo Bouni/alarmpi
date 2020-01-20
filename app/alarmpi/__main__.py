@@ -61,6 +61,7 @@ class Observer:
             ],
             "ric": data.get("assigned"),
         }
+        LOGGER.info(alarmdata)
         return alarmdata
 
     def alert(self, account, alarmdata):
@@ -73,8 +74,7 @@ class Observer:
             alarmenabled=True,
             address=alarmdata.get("address"),
             facts=alarmdata.get("facts"),
-            # number=alarmdata.get("number"),
-            number="12121212",
+            number=alarmdata.get("number"),
             properties=alarmdata.get("properties"),
             ric=alarmdata.get("ric"),
         )
