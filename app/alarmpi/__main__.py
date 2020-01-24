@@ -44,15 +44,15 @@ class Observer:
         if not text:
             return
         _fetchtime = dt.now()
-        LOGGER.info("Fetching the alarmmail from {mailcfg.get('user')} took {(_fetchtime - _start).total_seconds()} seconds")
+        LOGGER.info(f"Fetching the alarmmail from {mailcfg.get('user')} took {(_fetchtime - _start).total_seconds()} seconds")
         data = AlarmParser(self.config, text).data
         _parsetime = dt.now()
-        LOGGER.info("Parsing the alarmmail took {(_parsetime - _fetchtime).total_seconds()} seconds")
+        LOGGER.info(f"Parsing the alarmmail took {(_parsetime - _fetchtime).total_seconds()} seconds")
         alarmdata = self.assign_data(data)
         self.alert(account, alarmdata)
         _alerttime = dt.now()
-        LOGGER.info("Sending to Connect API took {(_alarttime - _parsetime).total_seconds()} seconds")
-        LOGGER.info("Entire process took {(_alarttime - _start).total_seconds()} seconds")
+        LOGGER.info(f"Sending to Connect API took {(_alarttime - _parsetime).total_seconds()} seconds")
+        LOGGER.info(f"Entire process took {(_alarttime - _start).total_seconds()} seconds")
 
     def assign_data(self, data):
         """Assign data to right api fields, transform values if necessary."""
