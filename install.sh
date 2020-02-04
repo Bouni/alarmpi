@@ -1,19 +1,24 @@
 #!/bin/bash
 
-# update packet list
-apt -y update
+# Update package index
+sudo apt-get update
 
-# upgrade system
-apt -y upgrade
+# Upgrade system
+sudo apt-get upgrade
 
-# Install git and Ansible
-apt -y install git ansible curl
+# install packages
+sudo apt install git curl
 
-# Copy ansible playbook script from github
-wget https://raw.githubusercontent.com/Bouni/alarmpi/master/ansible/playbooks/alarmpi.yaml -O /home/pi/alarmpi.yaml
+# Install docker
+curl -sSL https://get.docker.com | sh
 
-# Run playbook
-ansible-playbook /home/pi/alarmpi.yaml
+# add pi user to docker group
+usermod -aG docker pi
 
-# Delete playbook
-rm /home/pi/alarmpi.yaml
+# install pip3
+curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && sudo python3 get-pip.py
+
+# install docker-compose
+sudo pip3 install docker-compose
+
+
