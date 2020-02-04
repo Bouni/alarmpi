@@ -20,7 +20,8 @@ LOGGER = logging.getLogger("AlarmPi")
 
 
 class Observer:
-    def __init__(self, config):
+    def __init__(self, config, debug):
+        self.debug = debug
         self.config = config
 
     def run(self):
@@ -69,28 +70,33 @@ class Observer:
             ],
             "ric": data.get("assigned"),
         }
-        LOGGER.info(alarmdata)
         return alarmdata
 
     def alert(self, account, alarmdata):
         """Send alarm data to Feuersoftware API."""
-        api = PublicAPI(account.get("connect").get("token"))
-        r = api.post_operation(
-            start=alarmdata.get("start"),
-            keyword=alarmdata.get("keyword"),
-            status="new",
-            alarmenabled=True,
-            address=alarmdata.get("address"),
-            facts=alarmdata.get("facts"),
-            number=alarmdata.get("number"),
-            properties=alarmdata.get("properties"),
-            ric=alarmdata.get("ric"),
-        )
-
+        if not self.debug:
+            api = PublicAPI(account.get("connect").get("token"))
+            r = api.post_operation(
+                start=alarmdata.get("start"),
+                keyword=alarmdata.get("keyword"),
+                status="new",
+                alarmenabled=True,
+                address=alarmdata.get("address"),
+                facts=alarmdata.get("facts"),
+                number=alarmdata.get("number"),
+                properties=alarmdata.get("properties"),
+                ric=alarmdata.get("ric"),
+            )
+            logger.info("Connect API called")
+        else:
+            LOGGER.info("Running in debug mode, normally now the API call would have been made")
+            LOGGER.info(account)
+            LOGGER.info(alarmdata)
 
 @click.command()
 @click.argument("configfile", type=click.Path(exists=True))
-def main(configfile):
+@click.option('--debug', is_flag=True)
+def main(configfile, debug):
 
     with open(configfile) as cfg:
         config = yaml.load(cfg, Loader=yaml.BaseLoader)
@@ -99,7 +105,7 @@ def main(configfile):
         LOGGER.error("No config file found at %s!", configfile)
         sys.exit(1)
 
-    observer = Observer(config)
+    observer = Observer(config, debug)
     observer.run()
 
 
