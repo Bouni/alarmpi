@@ -16,16 +16,100 @@ Es wird kein Bildschirm am RaspberryPi benötigt um dieses Setup durchzuführen.
 7. kitty.exe [herunterladen](https://github.com/cyd01/KiTTY/releases).
 8. Per SSH (kitty) mit dem RaspberryPi verbinden, hierzu die eben ausfindig gemachte IP in das Feld Host name eintragen und auf Open klicken.
 
-## System Update und Installation von Ansible
+## Installation des eigentlichen Systems
 
-Auf der Konsole führ man nun nacheinander die nachfolgenden Befehle aus.
+Auf der Konsole führt man nun den nachfolgenden Befehle aus:
 
-1. `sudo apt-get update` Um die Paketlisten zu aktualisieren
-2. `sudo apt-get upgrade` Um die Pakete zu aktualisieren
-3. `sudo apt-get install ansible` Um Ansible zu installieren
+`curl -sSL https://raw.githubusercontent.com/Bouni/alarmpi/alarmpi-docker/install.sh | sudo bash`
 
-Nun hat man das System auf den aktuellsten Stand gebracht und [Ansible](https://docs.ansible.com/ansible/latest/index.html), ein Tool zum automatischen provisionieren von Systemen, installiert.
+Dies updatet das System, installiert die notwendigen Pakete und klont das Git repo
 
-## AlarmPi Git Repositiory clonen
+Danach sollte das system einmal neu gestartet werden, hierzu `sudo reboot` eingeben und Enter drücken.
 
-TBD
+## Config File anpassen
+
+Nun muss ein config file erstellt werden, hierzu kopiert man das Beispiel:
+
+`cp ~/alarmpi/config/config.yaml.example ~/alarmpi/config/config.yaml`
+
+Nun öffnet man das config file mit z.B. nano und passt dieses an.
+
+Hier ein Beispiel:
+
+```
+accounts:
+  - name: Musterstadt
+    mail:
+        host: imap.mailprovider.de
+        user: alarm@ffw-musterstadt.de
+        password: Feuer!
+        subject: "Einsatzmeldung"
+    connect:
+        token: >- 
+            E-pzIiYlxxTdFu8w9a-KWNVHv-4jIqRdg5UKyiwRE24soOJNDHyFi9MHXDzHICJUQ9O
+            AQryScOihl5F2ZVsFeOEvy1bhOU5Vr33ocLRteQhTL4uTHr76wV4BLkaOYvJGOpzVBx
+            YyQoQr88o9DgarO3V3tU2wGWghmWcSHYQzZcCu1SVDkvPJk3qs6Uz6uLGsERzSQIOnd
+            pPagCKpBt8p9flM_dax-10oWhqXjhTXzCnOO512R1-0i1S9N7OEjUFr1NIesrhCjrl9
+            K_nwPwWHoHHXaSpaddouk_9_EKDcXVqBXFLJwYRB9mQ-pxMhm--Gy-iKqzBeky-pPpG
+            i4_v9XDzDpS4xPlpL3N1NGuAmQsgVWbEjWa-rdRu9Af8k9Bb4XvogCQJ5--TRlnGzDo
+            04g3Xi2obBBpwBmZRXdddYpwRKHBTyl96ERDZadnD2c70QpFfOA2pduLBM1RHUpeqiw
+            GABXfs-FQ5eZ8fMPX7RYiutzourY3K_tFsCvaB0w6jXqTzQsfqjSceJyPh8erf6OiTS
+            LA_C65GHJY3v6c3sCToIIuoplDHB7Havy0XI0S4_NNvfIQ
+
+parser:
+  - var: start
+    regex: 'LS RTK: (.*)\n'
+  - var: number
+    regex: 'EINSATZNUMMER: (.*)\n'
+  - var: keyword
+    regex: 'STICHWORT: (.*)\n'
+  - var: city
+    regex: 'Ort: (.*)\n'
+  - var: district
+    regex: 'Ortsteil: (.*)\n'
+  - var: object
+    regex: 'Objekt: (.*)\n'
+  - var: street
+    regex: 'Strasse: (.*)\n'
+  - var: housenumber
+    regex: 'Hausnummer: (.*)\n'
+  - var: comment
+    regex: 'Bemerkung: (.*)\n'
+  - var: siren
+    regex: 'Sondersignal: (.*)\n'
+  - var: assigned
+    regex: 'Zugeteilt: (.*)\n'
+
+```
+
+Beim config File handelt es sich um ein [YAML](https://de.wikipedia.org/wiki/YAML) file, bei diesem ist die Tiefe der einrückung entscheidend!
+
+Es können quasi beliebig viele Mail Accounts für die Überwachung angegeben werden, hierzu wird einfach ein weiter Block `-name: ...` unter dem ersten angelegt.
+Auch hier wieder auf die Einrückungstiefe achten.
+
+## Docker container starten
+
+Ist das File angepasst startet man den Docker container:
+
+```
+cd ~/alarmpi
+docker-compose up -d
+```
+
+Um zu sehen ob der Container erfolgreich gestartet ist, gibt man `docker ps -a` ein, der output sieht ungefähr so aus:
+
+```
+CONTAINER ID        IMAGE                                 COMMAND                  CREATED             STATUS                    PORTS               NAMES
+d2d03145f6b5        alarmpi_alarmpi                       "python alarmpi conf…"   23 minutes ago      Up 23 minutes                                 alarmpi
+```
+
+Wenn man die logs begutachten möchte, dann kann man die mit dem Befehl `docker logs alarmpi -f`, der output wird ungefähr so aussehen:
+
+```
+2020-02-04 13:57:44.236 - mailcheck - INFO - Successfully connected to IMAP server <mailserveradresse>
+2020-02-04 13:57:44.251 - mailcheck - INFO - Successfully logged in to IMAP server as <mailaccount>
+2020-02-04 13:57:44.265 - mailcheck - INFO - Successfully selected mailbox INBOX
+2020-02-04 13:57:44.278 - mailcheck - INFO - Keine neuen E-Mails
+```
+
+Um den container zu stoppen gibt man `docker-compose down` ein.

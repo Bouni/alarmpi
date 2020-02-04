@@ -21,4 +21,11 @@ curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && sudo python3 get-pip.
 # install docker-compose
 sudo pip3 install docker-compose
 
+# clone git repo 
+git clone https://github.com/Bouni/alarmpi.git ~/alarmpi
 
+# change directory
+cd ~/alarmpi
+
+# checkout docker branch
+git checkout alarmpi-docker
