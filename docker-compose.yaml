@@ -1,0 +1,11 @@
+version: '3'
+services:
+  alarmpi:
+    container_name: alarmpi
+    build: .
+    environment:
+      - DEBUG=True
+    volumes:
+      - "./config:/config"
+    restart: on-failure
+    command: "python alarmpi config/config.yaml"

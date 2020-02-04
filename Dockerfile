@@ -9,14 +9,12 @@ RUN apk add \
         bash
 
 
-RUN mkdir /opt/alarmpi
+RUN mkdir /alarmpi
+RUN mkdir /config
 
-WORKDIR /opt/alarmpi
-
-COPY ./alarmpi/* ./
+COPY ./alarmpi/* /alarmpi/
 
 COPY ./requirements.txt ./
 
 RUN pip3 install -r requirements.txt
 
-CMD ["python", "-m", "http.server"]

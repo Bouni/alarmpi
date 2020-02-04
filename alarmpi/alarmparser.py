@@ -12,7 +12,6 @@ class AlarmParser:
         self._parse()
 
     def decode(self, msg):
-        LOGGER.error(type(msg))
         for e in ["utf-8", "cp1252", "latin1"]:
             try:
                 return quopri.decodestring(msg).decode(e)

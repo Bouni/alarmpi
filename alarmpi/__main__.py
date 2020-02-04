@@ -11,7 +11,7 @@ from feuersoftware import PublicAPI
 from alarmparser import AlarmParser
 from mailcheck import Mail
 
-LOGLEVEL = "INFO"
+LOGLEVEL = os.getenv("LOGLEVEL", "INFO")
 
 format = "%(asctime)s.%(msecs)03d - %(name)s - %(levelname)s - %(message)s"
 dateformat = "%Y-%m-%d %H:%M:%S"
@@ -20,11 +20,13 @@ LOGGER = logging.getLogger("AlarmPi")
 
 
 class Observer:
-    def __init__(self, config, debug):
-        self.debug = debug
+    def __init__(self, config):
+        self.debug = os.getenv("DEBUG", False)
         self.config = config
 
     def run(self):
+        if self.debug:
+            LOGGER.info("Debug mode active!")
         while True:
             try:
                 for account in self.config.get("accounts"):
@@ -52,8 +54,8 @@ class Observer:
         alarmdata = self.assign_data(data)
         self.alert(account, alarmdata)
         _alerttime = dt.now()
-        LOGGER.info(f"Sending to Connect API took {(_alarttime - _parsetime).total_seconds()} seconds")
-        LOGGER.info(f"Entire process took {(_alarttime - _start).total_seconds()} seconds")
+        LOGGER.info(f"Sending to Connect API took {(_alerttime - _parsetime).total_seconds()} seconds")
+        LOGGER.info(f"Entire process took {(_alerttime - _start).total_seconds()} seconds")
 
     def assign_data(self, data):
         """Assign data to right api fields, transform values if necessary."""
@@ -95,8 +97,7 @@ class Observer:
 
 @click.command()
 @click.argument("configfile", type=click.Path(exists=True))
-@click.option('--debug', is_flag=True)
-def main(configfile, debug):
+def main(configfile):
 
     with open(configfile) as cfg:
         config = yaml.load(cfg, Loader=yaml.BaseLoader)
@@ -105,7 +106,7 @@ def main(configfile, debug):
         LOGGER.error("No config file found at %s!", configfile)
         sys.exit(1)
 
-    observer = Observer(config, debug)
+    observer = Observer(config)
     observer.run()
 
 
