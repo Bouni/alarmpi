@@ -20,7 +20,7 @@ Es wird kein Bildschirm am RaspberryPi benötigt um dieses Setup durchzuführen.
 
 Auf der Konsole führt man nun den nachfolgenden Befehle aus:
 
-`curl -sSL https://raw.githubusercontent.com/Bouni/alarmpi/alarmpi-docker/install.sh | sudo bash`
+`curl -sSL https://raw.githubusercontent.com/Bouni/alarmpi/alarmpi-docker/setup.sh | sudo bash`
 
 Dies updatet das System, installiert die notwendigen Pakete und klont das Git repo
 
