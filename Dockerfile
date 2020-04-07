@@ -1,13 +1,9 @@
-FROM python:3.8-alpine
+FROM python:3.8-slim
 
 ENV PYTHONUNBUFFERED=1
 
-RUN apk update
-RUN apk add \
-        git \
-        curl \
-        bash
-
+RUN apt-get update
+RUN apt-get install bash
 
 RUN mkdir /alarmpi
 RUN mkdir /config
@@ -16,5 +12,5 @@ COPY ./alarmpi/* /alarmpi/
 
 COPY ./requirements.txt ./
 
-RUN pip3 install -r requirements.txt
+RUN pip install -r requirements.txt
 
