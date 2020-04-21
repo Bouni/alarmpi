@@ -3,8 +3,8 @@ services:
   alarmpi:
     container_name: alarmpi
     build: .
-    environment:
-      - DEBUG=True
+    #environment:
+    #  - DEBUG=True
     volumes:
       - "./config:/config"
     restart: on-failure
