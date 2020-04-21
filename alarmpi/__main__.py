@@ -89,7 +89,7 @@ class Observer:
                 properties=alarmdata.get("properties"),
                 ric=alarmdata.get("ric"),
             )
-            logger.info("Connect API called")
+            LOGGER.info("Connect API called")
         else:
             LOGGER.info("Running in debug mode, normally now the API call would have been made")
             LOGGER.info(account)
