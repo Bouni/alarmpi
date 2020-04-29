@@ -7,5 +7,5 @@ services:
     #  - DEBUG=True
     volumes:
       - "./config:/config"
-    restart: on-failure
+    restart: always
     command: "python alarmpi config/config.yaml"
